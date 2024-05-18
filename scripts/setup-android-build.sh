@@ -62,7 +62,12 @@ if (($#==1)); then
 # source=$source
 # config=$config
 declare -r cmd=\$(printf ' %q' "\$@")
-"$source/prebuilts/build-tools/linux-x86/bin/nsjail"\
+if [[ $(uname -m) == "aarch64" ]]; then
+  arch=arm64
+else
+  arch=x86
+fi
+"$source/prebuilts/build-tools/linux-$arch/bin/nsjail"\
  -Mo -q -e -t 0\
  -EANDROID_QUIET_BUILD=true \
  -B / -B "$target:$source/out"\
