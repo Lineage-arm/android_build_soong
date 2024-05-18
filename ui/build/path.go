@@ -105,12 +105,19 @@ func SetupLitePath(ctx Context, config Config, tmpDir string) {
 
 	myPath, _ = filepath.Abs(myPath)
 
+	var lp string
+	if runtime.GOARCH == "arm64" {
+		lp = "arm64"
+	} else {
+		lp = "x86"
+	}
+
 	// Set up the checked-in prebuilts path directory for the current host OS.
-	prebuiltsPath, _ := filepath.Abs("prebuilts/build-tools/path/" + runtime.GOOS + "-x86")
+	prebuiltsPath, _ := filepath.Abs("prebuilts/build-tools/path/" + runtime.GOOS + "-" + lp)
 	myPath = prebuiltsPath + string(os.PathListSeparator) + myPath
 
 	if value, _ := config.Environment().Get("BUILD_BROKEN_PYTHON_IS_PYTHON2"); value == "true" {
-		py2Path, _ := filepath.Abs("prebuilts/build-tools/path/" + runtime.GOOS + "-x86/py2")
+		py2Path, _ := filepath.Abs("prebuilts/build-tools/path/" + runtime.GOOS + "-" + lp + "/py2")
 		if info, err := os.Stat(py2Path); err == nil && info.IsDir() {
 			myPath = py2Path + string(os.PathListSeparator) + myPath
 		}
@@ -250,11 +257,18 @@ func SetupPath(ctx Context, config Config) {
 
 	// We put some prebuilts in $PATH, since it's infeasible to add dependencies
 	// for all of them.
-	prebuiltsPath, _ := filepath.Abs("prebuilts/build-tools/path/" + runtime.GOOS + "-x86")
+	var lp string
+	if runtime.GOARCH == "arm64" {
+		lp = "arm64"
+	} else {
+		lp = "x86"
+	}
+
+	prebuiltsPath, _ := filepath.Abs("prebuilts/build-tools/path/" + runtime.GOOS + "-" + lp)
 	myPath = prebuiltsPath + string(os.PathListSeparator) + myPath
 
 	if value, _ := config.Environment().Get("BUILD_BROKEN_PYTHON_IS_PYTHON2"); value == "true" {
-		py2Path, _ := filepath.Abs("prebuilts/build-tools/path/" + runtime.GOOS + "-x86/py2")
+		py2Path, _ := filepath.Abs("prebuilts/build-tools/path/" + runtime.GOOS + "-" + lp + "/py2")
 		if info, err := os.Stat(py2Path); err == nil && info.IsDir() {
 			myPath = py2Path + string(os.PathListSeparator) + myPath
 		}
