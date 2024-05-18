@@ -23,7 +23,14 @@
 # Ensure GOROOT is set to the in-tree version.
 case $(uname) in
     Linux)
-        export GOROOT="${TOP}/prebuilts/go/linux-x86/"
+        case $(uname -m) in
+            aarch64)
+                export GOROOT="${TOP}/prebuilts/go/linux-arm64/"
+            ;;
+            *)
+                export GOROOT="${TOP}/prebuilts/go/linux-x86/"
+            ;;
+        esac
         ;;
     Darwin)
         export GOROOT="${TOP}/prebuilts/go/darwin-x86/"
