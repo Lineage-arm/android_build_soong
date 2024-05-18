@@ -1553,13 +1553,18 @@ func (c *configImpl) hostCrossOut() string {
 
 func (c *configImpl) HostPrebuiltTag() string {
 	if runtime.GOOS == "linux" {
-		return "linux-x86"
+		if runtime.GOARCH == "arm64" {
+			return "linux-arm64"
+		} else {
+			return "linux-x86"
+		}
 	} else if runtime.GOOS == "darwin" {
 		return "darwin-x86"
 	} else {
 		panic("Unsupported OS")
 	}
 }
+
 
 func (c *configImpl) PrebuiltBuildTool(name string) string {
 	if v, ok := c.environ.Get("SANITIZE_HOST"); ok {
