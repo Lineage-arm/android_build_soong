@@ -707,7 +707,12 @@ func (c *config) HostCcSharedLibPath(ctx PathContext, lib string) Path {
 func (c *config) PrebuiltOS() string {
 	switch runtime.GOOS {
 	case "linux":
-		return "linux-x86"
+		switch runtime.GOARCH {
+		case "arm64":
+			return "linux-arm64"
+		default:
+			return "linux-x86"
+		}
 	case "darwin":
 		return "darwin-x86"
 	default:
