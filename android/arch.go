@@ -150,6 +150,7 @@ var (
 
 	Arm     = newArch("arm", "lib32")
 	Arm64   = newArch("arm64", "lib64")
+	Aarch64 = newArch("aarch64", "lib64")
 	Riscv64 = newArch("riscv64", "lib64")
 	X86     = newArch("x86", "lib32")
 	X86_64  = newArch("x86_64", "lib64")
